@@ -1,0 +1,36 @@
+### Registrar ingreso de estudiante
+POST http://localhost:8000/api/ingresos
+Content-Type: application/json
+
+{
+  "codigoEstudiante": "2021002",
+  "nombreEstudiante": "Juan Romero",
+  "idPrograma": 2,
+  "fechaIngreso": "2024-11-06",
+  "horaIngreso": "08:00",
+  "idSala": 1,
+  "idResponsable": 1
+}
+
+
+### Registrar salida de estudiante
+PUT http://localhost:8000/api/ingresos/1/salida
+Content-Type: application/json
+
+{
+  "horaSalida": "11:00"
+}
+
+### mostrar ingresos del dia 
+GET http://localhost:8000/api/ingresos/consulta?fechaInicio=2024-11-01&fechaFin=2024-11-06&idPrograma=2
+
+###  modificar un ingreso en espesifico
+
+PUT http://localhost:8000/api/ingresos/1
+Content-Type: application/json
+
+{
+  "codigoEstudiante": "2021001",
+  "nombreEstudiante": "Camilo Romero"
+}
+
