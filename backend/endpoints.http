@@ -3,18 +3,18 @@ POST http://localhost:8000/api/ingresos
 Content-Type: application/json
 
 {
-  "codigoEstudiante": "2021002",
-  "nombreEstudiante": "Juan Romero",
+  "codigoEstudiante": "201002",
+  "nombreEstudiante": "Juaan Romero",
   "idPrograma": 2,
   "fechaIngreso": "2024-11-06",
-  "horaIngreso": "08:00",
-  "idSala": 2,
+  "horaIngreso": "07:00",
+  "idSala": 1,
   "idResponsable": 1
 }
 
 
 ### Registrar salida de estudiante
-PUT http://localhost:8000/api/ingresos/13/salida
+PUT http://localhost:8000/api/ingresos/1/salida
 Content-Type: application/json
 
 {

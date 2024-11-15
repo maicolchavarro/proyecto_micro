@@ -19,23 +19,16 @@ class IngresoController extends Controller
             'idPrograma' => 'required|exists:programas,id',
             'fechaIngreso' => 'required|date',
             'horaIngreso' => 'required|date_format:H:i',
-            'horaFin' => 'required|date_format:H:i|after:horaIngreso',
             'idSala' => 'required|exists:salas,id',
             'idResponsable' => 'required|exists:responsables,id',
         ]);
-
         // Verificar disponibilidad de la sala en el horario seleccionado
-        $dia = Carbon::parse($request->fechaIngreso)->isoFormat('dddd');
+        $dia = Carbon::parse($request->fechaIngreso)->format('l');
         $horarios = HorarioSala::where('idSala', $request->idSala)
             ->where('dia', $dia)
             ->where(function ($query) use ($request) {
-                $query->where(function ($subQuery) use ($request) {
-                    $subQuery->where('horaInicio', '<=', $request->horaIngreso)
-                             ->where('horaFin', '>', $request->horaIngreso);
-                })->orWhere(function ($subQuery) use ($request) {
-                    $subQuery->where('horaInicio', '<', $request->horaFin)
-                             ->where('horaFin', '>=', $request->horaFin);
-                });
+                $query->whereBetween('horaInicio', [$request->horaIngreso, $request->horaFin])
+                      ->orWhereBetween('horaFin', [$request->horaIngreso, $request->horaFin]);
             })->exists();
 
         if ($horarios) {
@@ -61,7 +54,7 @@ class IngresoController extends Controller
             return response()->json(['error' => 'Hora de salida fuera del horario permitido'], 403);
         }
 
-        $ingreso->update(['horaSalida' => $validated['horaSalida']]);
+        $ingreso->update(['horaSalida' => $request->horaSalida]);
         return response()->json($ingreso);
     }
 
@@ -106,7 +99,7 @@ class IngresoController extends Controller
         ]);
 
         $ingreso = Ingreso::findOrFail($id);
-        $ingreso->update($validated);
+        $ingreso->update(array_merge($validated, ['updated_at' => now()]));
 
         return response()->json($ingreso);
     }
@@ -114,7 +107,7 @@ class IngresoController extends Controller
     // Validación de horario permitido
     private function validarHorario($fecha, $hora)
     {
-        $dia = Carbon::parse($fecha)->isoFormat('dddd');
+        $dia = Carbon::parse($fecha)->format('l');
         $horaPermitida = false;
 
         if (in_array($dia, ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'])) {
