@@ -18,7 +18,9 @@ class Ingreso extends Model
         'horaIngreso', 
         'horaSalida', 
         'idResponsable', 
-        'idSala'
+        'idSala',
+        'created_at', 
+        'updated_at'
     ];
    // aqui tengo que hacer un cambio
     // Relación con el modelo Programa
@@ -38,4 +40,5 @@ class Ingreso extends Model
     {
         return $this->belongsTo(Responsable::class, 'idResponsable');
     }
+    
 }

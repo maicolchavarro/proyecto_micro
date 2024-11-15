@@ -8,24 +8,23 @@ Content-Type: application/json
   "idPrograma": 2,
   "fechaIngreso": "2024-11-06",
   "horaIngreso": "08:00",
-  "idSala": 1,
+  "idSala": 2,
   "idResponsable": 1
 }
 
 
 ### Registrar salida de estudiante
-PUT http://localhost:8000/api/ingresos/1/salida
+PUT http://localhost:8000/api/ingresos/13/salida
 Content-Type: application/json
 
 {
-  "horaSalida": "11:00"
+  "horaSalida": "09:00"
 }
 
 ### mostrar ingresos del dia 
-GET http://localhost:8000/api/ingresos/consulta?fechaInicio=2024-11-01&fechaFin=2024-11-06&idPrograma=2
+GET http://localhost:8000/api/ingresos/consulta??fechaInicio=2024-11-15&fechaFin=2024-11-15
 
 ###  modificar un ingreso en espesifico
-
 PUT http://localhost:8000/api/ingresos/1
 Content-Type: application/json
 
@@ -33,4 +32,31 @@ Content-Type: application/json
   "codigoEstudiante": "2021001",
   "nombreEstudiante": "Camilo Romero"
 }
+###registrar horario
+POST http://localhost:8000/api/horarios-salas
+Content-Type: application/json
+
+{
+  "idSala": 1,
+  "dia": "Lunes",
+  "materia": "Matematicas",
+  "horaInicio": "08:00",
+  "horaFin": "10:00",
+  "idPrograma": 2
+}
+###Consultar horarios:
+GET http://localhost:8000/api/horarios-salas?idSala=1&dia=lunes
+
+###Actualizar horario:
+PUT http://localhost:8000/api/horarios-salas/3
+Content-Type: application/json
+
+{
+  "horaInicio": "06:00",
+  "horaFin": "07:00"
+}
+
+
+###eliminar horario:
+DELETE http://localhost:8000/api/horarios-salas/
 

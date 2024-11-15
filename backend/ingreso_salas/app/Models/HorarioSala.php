@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,13 +9,24 @@ class HorarioSala extends Model
     use HasFactory;
 
     protected $table = 'horarios_salas';
-
+    public $timestamps = false; // Desactiva las marcas de tiempo
     protected $fillable = [
+        'idSala',
         'dia',
         'materia',
         'horaInicio',
         'horaFin',
         'idPrograma',
-        'idSala',
     ];
+
+    public function sala()
+    {
+        return $this->belongsTo(Sala::class, 'idSala');
+    }
+    
+    public function programa()
+    {
+        return $this->belongsTo(Programa::class, 'idPrograma');
+    }
+    
 }
