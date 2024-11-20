@@ -1,7 +1,5 @@
-// Configuración de la URL base de la API
 const API_URL = "http://localhost:8000/api";
 
-// Función genérica para realizar solicitudes a la API
 async function apiRequest(endpoint, method = "GET", body = null) {
     const options = {
         method,
@@ -16,7 +14,6 @@ async function apiRequest(endpoint, method = "GET", body = null) {
     return await response.json();
 }
 
-// Cargar opciones en desplegables
 async function cargarOpciones(endpoint, selectId) {
     const result = await apiRequest(endpoint, "GET");
     if (!result) return;
@@ -31,7 +28,6 @@ async function cargarOpciones(endpoint, selectId) {
     });
 }
 
-// Cargar datos al iniciar la página
 document.addEventListener("DOMContentLoaded", async () => {
     await cargarOpciones("/programa", "idPrograma");
     await cargarOpciones("/programa", "idProgramaConsulta");
@@ -78,14 +74,77 @@ document.getElementById("formConsultarIngresos").addEventListener("submit", asyn
     const fechaInicio = document.getElementById("fechaInicio").value;
     const fechaFin = document.getElementById("fechaFin").value;
     const idPrograma = document.getElementById("idProgramaConsulta").value;
-    
+
     const query = `?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&idPrograma=${idPrograma}`;
     const result = await apiRequest(`/ingresos/consulta${query}`);
-    
+
     const ingresosResultado = document.getElementById("ingresosResultado");
-    if (result) {
-        ingresosResultado.innerText = JSON.stringify(result, null, 2);
+    ingresosResultado.innerHTML = ""; 
+
+    if (result && result.length > 0) {
+        const table = document.createElement("table");
+        table.border = "1";
+        table.style.width = "100%";
+        const thead = document.createElement("thead");
+        const tbody = document.createElement("tbody");
+
+        const headers = [
+            "ID Ingreso",
+            "Código Estudiante",
+            "Nombre Estudiante",
+            "Fecha Ingreso",
+            "Hora Ingreso",
+            "Hora Salida",
+        ];
+        const headerRow = document.createElement("tr");
+        headers.forEach(header => {
+            const th = document.createElement("th");
+            th.textContent = header;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+
+        result.forEach(item => {
+            const row = document.createElement("tr");
+
+            [
+                item.id,
+                item.codigoEstudiante,
+                item.nombreEstudiante,
+                item.fechaIngreso,
+                item.horaIngreso,
+                item.horaSalida || "N/A",
+            ].forEach(text => {
+                const td = document.createElement("td");
+                td.textContent = text;
+                row.appendChild(td);
+            });
+
+            
+
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        ingresosResultado.appendChild(table);
     } else {
         ingresosResultado.innerText = "No se encontraron ingresos para los criterios de búsqueda.";
+    }
+});
+
+// Modificar ingreso
+document.getElementById("formModificarIngreso").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const idIngreso = document.getElementById("idIngresoModificar").value;
+    const body = {
+        codigoEstudiante: document.getElementById("codigoEstudianteModificar").value,
+        nombreEstudiante: document.getElementById("nombreEstudianteModificar").value,
+    };
+
+    const result = await apiRequest(`/ingresos/${idIngreso}`, "PUT", body);
+    if (result) {
+        alert("Ingreso modificado exitosamente");
+        console.log(result);
     }
 });

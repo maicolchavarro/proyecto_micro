@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Horarios</title>
+    <script defer src="../frontend/salas.js"></script>
+    <link rel="stylesheet" href="../frontend/salas.css"> 
+</head>
+<body>
+    <h1>Gestión de Horarios</h1>
+    <a href="../frontend/gestionEstudiante.html">Ir a Gestion de salas</a>
+
+    <div class="container">
+        <!-- Formulario para registrar un horario -->
+        <section>
+            <h2>Registrar Horario</h2>
+            <form id="formRegistrarHorario">
+                <label for="idSala">Sala:</label>
+                <select id="idSala" required></select>
+                <br>
+                <label for="dia">Día:</label>
+                <select id="dia" required>
+                    <option value="lunes">Lunes</option>
+                    <option value="martes">Martes</option>
+                    <option value="miércoles">Miércoles</option>
+                    <option value="jueves">Jueves</option>
+                    <option value="viernes">Viernes</option>
+                </select>
+                <br>
+                <label for="materia">Materia:</label>
+                <input type="text" id="materia" required>
+                <br>
+                <label for="horaInicio">Hora Inicio:</label>
+                <input type="time" id="horaInicio" required>
+                <br>
+                <label for="horaFin">Hora Fin:</label>
+                <input type="time" id="horaFin" required>
+                <br>
+                <label for="idPrograma">Programa:</label>
+                <select id="idPrograma" required></select>
+                <br>
+                <button type="submit">Registrar</button>
+            </form>
+        </section>
+
+        <!-- Actualizar horario -->
+        <section>
+            <h2>Actualizar Horario</h2>
+            <form id="formActualizarHorario">
+                <label for="idHorario">ID Horario:</label>
+                <input type="number" id="idHorario" required>
+                <br>
+                <label for="horaInicioActualizar">Hora Inicio:</label>
+                <input type="time" id="horaInicioActualizar">
+                <br>
+                <label for="horaFinActualizar">Hora Fin:</label>
+                <input type="time" id="horaFinActualizar">
+                <br>
+                <button type="submit">Actualizar</button>
+            </form>
+        </section>
+
+        <!-- Eliminar horario -->
+        <section>
+            <h2>Eliminar Horario</h2>
+            <form id="formEliminarHorario">
+                <label for="idHorarioEliminar">ID Horario:</label>
+                <input type="number" id="idHorarioEliminar" required>
+                <br>
+                <button type="submit">Eliminar</button>
+            </form>
+        </section>
+    </div>
+
+    <!-- Consultar horarios -->
+    <section class="full-width">
+        <h2>Consultar Horarios</h2>
+        <form id="formConsultarHorarios">
+            <label for="idSalaConsulta">Sala:</label>
+            <select id="idSalaConsulta"></select>
+            <br>
+            <label for="diaConsulta">Día:</label>
+            <select id="diaConsulta" required>
+                <option value="lunes">Lunes</option>
+                <option value="martes">Martes</option>
+                <option value="miércoles">Miércoles</option>
+                <option value="jueves">Jueves</option>
+                <option value="viernes">Viernes</option>
+            </select>
+            <br>
+            <button type="submit">Consultar</button>
+        </form>
+        <div id="horariosResultado"></div>
+    </section>
+
+</body>
+</html>

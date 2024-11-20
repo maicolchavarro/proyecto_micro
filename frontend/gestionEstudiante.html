@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Salas y Estudiantes</title>
+    <link rel="stylesheet" href="../frontend/estudiante.css">
+</head>
+<body>
+    <h1>Gestión de  Estudiantes</h1>
+    <a href="../frontend/salas.html">Ir a Gestion de salas</a>
+ 
+    <div class="container">
+        <!-- Registrar ingreso de estudiante -->
+        <section>
+            <form id="formRegistrarIngreso">
+                <h2>Registrar Ingreso</h2>
+                <input type="text" id="codigoEstudiante" placeholder="Código Estudiante" required />
+                <input type="text" id="nombreEstudiante" placeholder="Nombre Estudiante" required />
+                
+                <select id="idPrograma" name="programa" required>
+                    <option value="">Seleccionar Programa</option>
+                </select>
+                  
+                <select id="idSala" name="sala" required>
+                    <option value="">Seleccionar Sala</option>
+                </select>
+                  
+                <select id="idResponsable" name="responsable" required>
+                    <option value="">Seleccionar Responsable</option>
+                </select> 
+
+                <input type="date" id="fechaIngreso" required />
+                <input type="time" id="horaIngreso" required />
+                
+                <button type="submit">Registrar</button>
+            </form>
+        </section>
+
+        <!-- Registrar salida de estudiante -->
+        <section>
+            <form id="formRegistrarSalida">
+                <h2>Registrar Salida</h2>
+                <input type="number" id="idIngresoSalida" placeholder="ID Ingreso" required />
+                <input type="time" id="horaSalida" required />
+                <button type="submit">Registrar Salida</button>
+            </form>
+        </section>
+
+        <!-- Modificar ingreso de estudiante -->
+        <section>
+            <form id="formModificarIngreso">
+                <h2>Modificar Ingreso</h2>
+                <input type="number" id="idIngresoModificar" placeholder="ID Ingreso" required />
+                <input type="text" id="codigoEstudianteModificar" placeholder="Código Estudiante" required />
+                <input type="text" id="nombreEstudianteModificar" placeholder="Nombre Estudiante" required />
+                
+                <button type="submit">Modificar</button>
+            </form>
+        </section>
+
+        <!-- Consultar ingresos -->
+        <section class="full-width">
+            <form id="formConsultarIngresos">
+                <h2>Consultar Ingresos</h2>
+                <input type="date" id="fechaInicio" required />
+                <input type="date" id="fechaFin" required />
+                
+                <select id="idProgramaConsulta" >
+                    <option value="">Seleccionar Programa</option>
+                </select>
+                
+                <button type="submit">Consultar</button>
+            </form>
+            <div id="ingresosResultado"></div>
+        </section>
+    </div>
+
+    <script src="../frontend/jsEstudiante.js"></script>
+</body>
+</html>

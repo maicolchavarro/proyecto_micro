@@ -25,7 +25,7 @@ Content-Type: application/json
 GET http://localhost:8000/api/ingresos/consulta??fechaInicio=2024-11-16&fechaFin=2024-11-20
 
 ###  modificar un ingreso en espesifico
-PUT http://localhost:8000/api/ingresos/1
+PUT http://localhost:8000/api/ingresos/6
 Content-Type: application/json
 
 {
@@ -65,7 +65,7 @@ Content-Type: application/json
 GET http://localhost:8000/api/horarios-salas?idSala=1&dia=lunes
 
 ###Actualizar horario:
-PUT http://localhost:8000/api/horarios-salas/1
+PUT http://localhost:8000/api/horarios-salas/2
 Content-Type: application/json
 
 {

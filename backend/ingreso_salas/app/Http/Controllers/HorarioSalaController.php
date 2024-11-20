@@ -19,7 +19,7 @@ class HorarioSalaController extends Controller
             'idPrograma' => 'required|integer|exists:programas,id',
         ]);
 
-        // Verificar solapamientos con horarios existentes
+        // Verificamos que la sala no este ocupada
         $conflicto = HorarioSala::where('idSala', $validated['idSala'])
             ->where('dia', $validated['dia'])
             ->where(function ($query) use ($validated) {
@@ -56,8 +56,8 @@ class HorarioSalaController extends Controller
         if (!$horario) {
             return response()->json(['error' => 'Horario no encontrado'], 404);
         }
+        // Verificamos que la sala no este ocupada
 
-        // Validar que no haya solapamiento con otros horarios
         $conflicto = HorarioSala::where('idSala', $horario->idSala)
             ->where('dia', $horario->dia)
             ->where('id', '!=', $id)

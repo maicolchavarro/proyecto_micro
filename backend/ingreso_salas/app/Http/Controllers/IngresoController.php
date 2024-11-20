@@ -9,7 +9,6 @@ use Carbon\Carbon;
 
 class IngresoController extends Controller
 {
-    // Registrar un nuevo ingreso
     public function store(Request $request)
     {
         // Validación de los datos de ingreso
@@ -86,7 +85,7 @@ class IngresoController extends Controller
         return response()->json($ingresos);
     }
 
-    // Consultar ingresos por rango de fechas y filtros adicionales
+    // Consultar ingresos 
     public function consultarIngresos(Request $request)
     {
         $query = Ingreso::query();
@@ -110,7 +109,7 @@ class IngresoController extends Controller
         $ingresos = $query->get();
         return response()->json($ingresos);
     }
-    // Actualizar datos del estudiante en un ingreso
+    // Actualizar datos de un estudiante
     public function updateIngreso(Request $request, $id)
     {
         $validated = $request->validate([

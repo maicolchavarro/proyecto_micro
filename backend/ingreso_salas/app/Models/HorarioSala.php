@@ -9,7 +9,7 @@ class HorarioSala extends Model
     use HasFactory;
 
     protected $table = 'horarios_salas';
-    public $timestamps = false; // Desactiva las marcas de tiempo
+    public $timestamps = false; 
     protected $fillable = [
         'idSala',
         'dia',
