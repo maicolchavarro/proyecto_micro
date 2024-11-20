@@ -4,6 +4,32 @@
     box-sizing: border-box;
 }
 
+
+a {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #6c63ff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+a:hover {
+    background-color: #5753e0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+a:active {
+    background-color: #4946c1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
+}
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
