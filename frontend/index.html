@@ -14,11 +14,22 @@
         <form id="formRegistrarIngreso">
             <input type="text" id="codigoEstudiante" placeholder="Código Estudiante" required />
             <input type="text" id="nombreEstudiante" placeholder="Nombre Estudiante" required />
-            <input type="number" id="idPrograma" placeholder="ID Programa" required />
+            
+            <select id="idPrograma" name="programa" required>
+                <option value="">Seleccionar Programa</option>
+            </select>
+              
+            <select id="idSala" name="sala" required>
+                <option value="">Seleccionar Sala</option>
+            </select>
+              
+            <select id="idResponsable" name="responsable" required>
+                <option value="">Seleccionar Responsable</option>
+            </select> 
+
             <input type="date" id="fechaIngreso" required />
             <input type="time" id="horaIngreso" required />
-            <input type="number" id="idSala" placeholder="ID Sala" required />
-            <input type="number" id="idResponsable" placeholder="ID Responsable" required />
+            
             <button type="submit">Registrar</button>
         </form>
     </section>
@@ -39,34 +50,16 @@
         <form id="formConsultarIngresos">
             <input type="date" id="fechaInicio" required />
             <input type="date" id="fechaFin" required />
-            <input type="number" id="idProgramaConsulta" placeholder="ID Programa" />
+            
+            <select id="idProgramaConsulta" required>
+                <option value="">Seleccionar Programa</option>
+            </select>
+            
             <button type="submit">Consultar</button>
         </form>
         <div id="ingresosResultado"></div>
     </section>
 
-    <!-- Registrar y gestionar horarios -->
-    <section>
-        <h2>Gestión de Horarios</h2>
-        <!-- Registrar horario -->
-        <form id="formRegistrarHorario">
-            <input type="number" id="idSalaHorario" placeholder="ID Sala" required />
-            <input type="text" id="diaHorario" placeholder="Día (Lunes, Martes...)" required />
-            <input type="text" id="materiaHorario" placeholder="Materia" required />
-            <input type="time" id="horaInicioHorario" required />
-            <input type="time" id="horaFinHorario" required />
-            <input type="number" id="idProgramaHorario" placeholder="ID Programa" required />
-            <button type="submit">Registrar Horario</button>
-        </form>
-
-        <!-- Consultar horarios -->
-        <form id="formConsultarHorarios">
-            <input type="number" id="idSalaConsulta" placeholder="ID Sala" />
-            <input type="text" id="diaConsulta" placeholder="Día (opcional)" />
-            <button type="submit">Consultar Horarios</button>
-        </form>
-        <div id="horariosResultado"></div>
-    </section>
+    <script src="../frontend/js.js"></script>
 </body>
-<script src="../frontend/js.js"></script>
 </html>

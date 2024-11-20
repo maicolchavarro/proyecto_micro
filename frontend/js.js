@@ -8,10 +8,36 @@ async function apiRequest(endpoint, method = "GET", body = null) {
         headers: { "Content-Type": "application/json" },
         body: body ? JSON.stringify(body) : null,
     };
-
     const response = await fetch(`${API_URL}${endpoint}`, options);
-    return response.json();
+    if (!response.ok) {
+        alert(`Error en la solicitud: ${response.statusText}`);
+        return null;
+    }
+    return await response.json();
 }
+
+// Cargar opciones en desplegables
+async function cargarOpciones(endpoint, selectId) {
+    const result = await apiRequest(endpoint, "GET");
+    if (!result) return;
+
+    const select = document.getElementById(selectId);
+    select.innerHTML = '<option value="">Seleccionar</option>';
+    result.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.textContent = item.nombre || item.descripcion; // Si el item tiene nombre o descripcion
+        select.appendChild(option);
+    });
+}
+
+// Cargar datos al iniciar la página
+document.addEventListener("DOMContentLoaded", async () => {
+    await cargarOpciones("/programa", "idPrograma");
+    await cargarOpciones("/programa", "idProgramaConsulta");
+    await cargarOpciones("/sala", "idSala");
+    await cargarOpciones("/responsable", "idResponsable");
+});
 
 // Registrar ingreso
 document.getElementById("formRegistrarIngreso").addEventListener("submit", async (e) => {
@@ -25,8 +51,12 @@ document.getElementById("formRegistrarIngreso").addEventListener("submit", async
         idSala: document.getElementById("idSala").value,
         idResponsable: document.getElementById("idResponsable").value,
     };
+
     const result = await apiRequest("/ingresos", "POST", body);
-    alert(JSON.stringify(result));
+    if (result) {
+        alert("Ingreso registrado exitosamente");
+        console.log(result);
+    }
 });
 
 // Registrar salida
@@ -34,8 +64,12 @@ document.getElementById("formRegistrarSalida").addEventListener("submit", async 
     e.preventDefault();
     const id = document.getElementById("idIngresoSalida").value;
     const body = { horaSalida: document.getElementById("horaSalida").value };
+    
     const result = await apiRequest(`/ingresos/${id}/salida`, "PUT", body);
-    alert(JSON.stringify(result));
+    if (result) {
+        alert("Salida registrada exitosamente");
+        console.log(result);
+    }
 });
 
 // Consultar ingresos
@@ -44,32 +78,14 @@ document.getElementById("formConsultarIngresos").addEventListener("submit", asyn
     const fechaInicio = document.getElementById("fechaInicio").value;
     const fechaFin = document.getElementById("fechaFin").value;
     const idPrograma = document.getElementById("idProgramaConsulta").value;
+    
     const query = `?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&idPrograma=${idPrograma}`;
     const result = await apiRequest(`/ingresos/consulta${query}`);
-    document.getElementById("ingresosResultado").innerText = JSON.stringify(result, null, 2);
-});
-
-// Registrar horario
-document.getElementById("formRegistrarHorario").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const body = {
-        idSala: document.getElementById("idSalaHorario").value,
-        dia: document.getElementById("diaHorario").value,
-        materia: document.getElementById("materiaHorario").value,
-        horaInicio: document.getElementById("horaInicioHorario").value,
-        horaFin: document.getElementById("horaFinHorario").value,
-        idPrograma: document.getElementById("idProgramaHorario").value,
-    };
-    const result = await apiRequest("/horarios-salas", "POST", body);
-    alert(JSON.stringify(result));
-});
-
-// Consultar horarios
-document.getElementById("formConsultarHorarios").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const idSala = document.getElementById("idSalaConsulta").value;
-    const dia = document.getElementById("diaConsulta").value;
-    const query = `?idSala=${idSala}&dia=${dia}`;
-    const result = await apiRequest(`/horarios-salas${query}`);
-    document.getElementById("horariosResultado").innerText = JSON.stringify(result, null, 2);
+    
+    const ingresosResultado = document.getElementById("ingresosResultado");
+    if (result) {
+        ingresosResultado.innerText = JSON.stringify(result, null, 2);
+    } else {
+        ingresosResultado.innerText = "No se encontraron ingresos para los criterios de búsqueda.";
+    }
 });

@@ -22,17 +22,33 @@ class IngresoController extends Controller
             'idSala' => 'required|exists:salas,id',
             'idResponsable' => 'required|exists:responsables,id',
         ]);
+
         // Verificar disponibilidad de la sala en el horario seleccionado
         $dia = Carbon::parse($request->fechaIngreso)->format('l');
-        $horarios = HorarioSala::where('idSala', $request->idSala)
+        $horariosOcupados = HorarioSala::where('idSala', $request->idSala)
             ->where('dia', $dia)
             ->where(function ($query) use ($request) {
-                $query->whereBetween('horaInicio', [$request->horaIngreso, $request->horaFin])
-                      ->orWhereBetween('horaFin', [$request->horaIngreso, $request->horaFin]);
+                $query->where(function ($q) use ($request) {
+                    $q->where('horaInicio', '<=', $request->horaIngreso)
+                      ->where('horaFin', '>', $request->horaIngreso);
+                })->orWhere(function ($q) use ($request) {
+                    $q->where('horaInicio', '<', $request->horaIngreso)
+                      ->where('horaFin', '>=', $request->horaIngreso);
+                })->orWhere(function ($q) use ($request) {
+                    $q->where('horaInicio', '>=', $request->horaIngreso)
+                      ->where('horaFin', '<=', $request->horaIngreso);
+                });
             })->exists();
 
-        if ($horarios) {
-            return response()->json(['error' => 'La sala no está disponible en este horario'], 403);
+        if ($horariosOcupados) {
+            return response()->json([
+                'error' => 'La sala no está disponible en el horario especificado.',
+                'detalle' => [
+                    'sala' => $request->idSala,
+                    'dia' => $dia,
+                    'horaIngreso' => $request->horaIngreso,
+                ]
+            ], 403);
         }
 
         // Registrar el ingreso
@@ -48,6 +64,11 @@ class IngresoController extends Controller
         ]);
 
         $ingreso = Ingreso::findOrFail($id);
+
+        // Validar que la salida sea posterior a la hora de ingreso
+        if ($request->horaSalida <= $ingreso->horaIngreso) {
+            return response()->json(['error' => 'La hora de salida debe ser posterior a la de ingreso'], 403);
+        }
 
         // Validar que la salida esté en el horario permitido
         if (!$this->validarHorario($ingreso->fechaIngreso, $request->horaSalida)) {
@@ -89,7 +110,6 @@ class IngresoController extends Controller
         $ingresos = $query->get();
         return response()->json($ingresos);
     }
-
     // Actualizar datos del estudiante en un ingreso
     public function updateIngreso(Request $request, $id)
     {
